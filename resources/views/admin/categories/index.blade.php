@@ -1,0 +1,9 @@
+@extends('admin.layout')
+
+@section('title', 'Categories')
+
+@section('content')
+<div class="admin-page-heading"><div><span class="eyebrow">CATALOGUE STRUCTURE</span><h1>Categories</h1></div></div>
+<section class="admin-panel"><h2>Add a category</h2><form class="admin-inline-form" method="POST" action="{{ route('admin.categories.store') }}">@csrf<label>Category name<input name="name" maxlength="120" required></label><label>Bootstrap icon name <span class="muted-note">(optional)</span><input name="icon" placeholder="bi-heart-pulse" maxlength="80"></label><button class="button-primary" type="submit">Add category</button></form>@if ($errors->any())<div class="form-alert" role="alert">{{ $errors->first() }}</div>@endif</section>
+<section class="admin-panel"><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Category</th><th>Products</th><th>Visibility</th><th>Update</th></tr></thead><tbody>@foreach ($categories as $category)<tr><td colspan="4"><form class="category-admin-row" method="POST" action="{{ route('admin.categories.update', $category) }}">@csrf @method('PUT')<input name="name" value="{{ $category->name }}" maxlength="120" aria-label="Name for {{ $category->name }}" required><input name="icon" value="{{ $category->icon }}" maxlength="80" aria-label="Icon for {{ $category->name }}" placeholder="bi-plus-circle"><span>{{ $category->products_count }}</span><label class="admin-checkbox"><input type="checkbox" name="is_active" value="1" @checked($category->is_active)> Active</label><button class="table-action" type="submit">Save</button></form></td></tr>@endforeach</tbody></table></div></section>
+@endsection

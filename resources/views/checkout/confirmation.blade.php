@@ -1,0 +1,7 @@
+@extends('layouts.storefront')
+
+@section('title', 'Order received')
+
+@section('content')
+<section class="section-pad"><div class="container-xl confirmation-wrap"><span class="confirmation-mark"><i class="bi bi-check-lg" aria-hidden="true"></i></span><span class="eyebrow">ORDER RECEIVED</span><h1>Thank you, {{ $order->customer_name }}.</h1><p class="confirmation-intro">Your Cash on Delivery order has been recorded. Keep this order number for your reference.</p><div class="confirmation-number"><span>ORDER NUMBER</span><strong>{{ $order->order_number }}</strong><small>Confirmation sent to {{ $order->email }}</small></div><div class="confirmation-items">@foreach ($order->items as $item)<div class="summary-row"><span>{{ $item->product_name }} × {{ $item->quantity }}</span><strong>₱{{ number_format((float) $item->line_total, 2) }}</strong></div>@endforeach<div class="summary-row"><span>Subtotal</span><strong>₱{{ number_format((float) $order->subtotal, 2) }}</strong></div><div class="summary-row"><span>Delivery fee</span><strong>₱{{ number_format((float) $order->delivery_fee, 2) }}</strong></div><div class="summary-total"><span>Total due on delivery</span><strong>₱{{ number_format((float) $order->total, 2) }}</strong></div></div><a class="button-primary" href="{{ route('shop.index') }}">Back to the shop <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div></section>
+@endsection

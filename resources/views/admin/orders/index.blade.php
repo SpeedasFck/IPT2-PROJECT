@@ -1,0 +1,8 @@
+@extends('admin.layout')
+
+@section('title', 'Orders')
+
+@section('content')
+<div class="admin-page-heading"><div><span class="eyebrow">FULFILMENT</span><h1>Orders</h1></div></div>
+<section class="admin-panel"><form class="admin-filter-form" method="GET" action="{{ route('admin.orders.index') }}"><label>Search<input name="q" value="{{ $filters['q'] ?? '' }}" placeholder="Order, customer, or email" maxlength="100"></label><label>Status<select name="status"><option value="">All statuses</option>@foreach (['pending','confirmed','processing','shipped','delivered','cancelled'] as $status)<option value="{{ $status }}" @selected(($filters['status'] ?? '') === $status)>{{ ucfirst($status) }}</option>@endforeach</select></label><button class="button-primary" type="submit">Filter</button><a class="text-link" href="{{ route('admin.orders.index') }}">Clear</a></form><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Order</th><th>Customer</th><th>Date</th><th>Status</th><th>Payment</th><th>Total</th></tr></thead><tbody>@forelse ($orders as $order)<tr><td><a href="{{ route('admin.orders.show', $order) }}">{{ $order->order_number }}</a></td><td>{{ $order->customer_name }}<small>{{ $order->email }}</small></td><td>{{ $order->created_at->format('M j, Y') }}</td><td><span class="status-pill status-{{ $order->status }}">{{ ucfirst($order->status) }}</span></td><td>COD · {{ ucfirst($order->payment_status) }}</td><td>₱{{ number_format((float) $order->total, 2) }}</td></tr>@empty<tr><td colspan="6">No matching orders.</td></tr>@endforelse</tbody></table></div>{{ $orders->links() }}</section>
+@endsection
